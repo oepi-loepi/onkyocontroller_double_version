@@ -95,7 +95,7 @@ Screen {
 	Text {
 		id: domModeTXT
 		width:  160
-		text: "Domoticz Mode, requires Domoticz and plugin"
+		text: "Domoticz Mode, requires Domoticz"
 		font.pixelSize:  isNxt ? 20 : 16
 		font.family: qfont.regular.name
 
@@ -109,10 +109,13 @@ Screen {
 	OnOffToggle {
 		id: enableDomMode
 		height:  30
-		anchors.left: domModeTXT.right
-		anchors.leftMargin: isNxt ? 65 : 30
-		anchors.top: domModeTXT.top
 		leftIsSwitchedOn: true
+		anchors {
+			left: domModeTXT.right
+			leftMargin: isNxt ? 200 : 170
+			top: domModeTXT.top		
+		}
+
 		onSelectedChangedByUser: {
 			if (isSwitchedOn) {
 				app.domMode = true;
