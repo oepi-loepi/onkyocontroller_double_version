@@ -112,7 +112,7 @@ Screen {
 		leftIsSwitchedOn: true
 		anchors {
 			left: domModeTXT.right
-			leftMargin: isNxt ? 200 : 170
+			leftMargin: isNxt ? 200 : 145
 			top: domModeTXT.top		
 		}
 
@@ -134,7 +134,7 @@ Screen {
 
 		anchors {
 			left: enableDomMode.right
-			leftMargin: isNxt ? 65 : 30
+			leftMargin: isNxt ? 65 : 25
 			top: domModeTXT.top		
 		}
 	}
@@ -256,7 +256,7 @@ Screen {
 		anchors {
 			left: myLabel.left
 			top: onkyoURL.bottom
-			topMargin: 20
+			topMargin: 10
 		}
 	}
 
@@ -287,7 +287,7 @@ Screen {
 		anchors {
 			left: myLabel.left
 			top: enableSleepToggle.bottom
-			topMargin: 20
+			topMargin: 10
 		}
 		visible: app.domMode
 	}
