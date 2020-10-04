@@ -95,7 +95,7 @@ Screen {
 	Text {
 		id: domModeTXT
 		width:  160
-		text: "Domoticz Mode"
+		text: "Domoticz Mode, requires Domoticz and plugin"
 		font.pixelSize:  isNxt ? 20 : 16
 		font.family: qfont.regular.name
 
@@ -125,7 +125,7 @@ Screen {
 	Text {
 		id: domModeTXT2
 		width:  160
-		text: "ESP Socket Mode"
+		text: "ESP Socket Mode, required flashed Wemos D1 Mini"
 		font.pixelSize:  isNxt ? 20 : 16
 		font.family: qfont.regular.name
 
