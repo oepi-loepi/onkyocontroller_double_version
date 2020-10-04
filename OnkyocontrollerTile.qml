@@ -37,7 +37,7 @@ Tile {
 			width: parent.width
 			font.pixelSize: ((app.actualTitleLong||!dimState) && !isNxt)? 12 : 20
 			wrapMode: Text.WordWrap
-         		text: !app.actFM ? app.actualArtist : !app.domMode? ("Radio Preset: " + app.actualPreset) : "Radio Mode"
+         		text: !app.actPower & !dimState ? "Controller for Onkyo & Pioneer": (!app.actFM ? app.actualArtist : !app.domMode? ("Radio Preset: " + app.actualPreset) : "Radio Mode")
 			font.family: qfont.regular.name
 			font.bold: true
 			color: !dimState? "black" : "white"

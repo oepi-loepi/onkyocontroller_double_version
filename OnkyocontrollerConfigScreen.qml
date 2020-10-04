@@ -4,7 +4,7 @@ import BasicUIControls 1.0;
 
 Screen {
 	id: onkyocontrollerConfigScreen
-	screenTitle: "Onkyocontroller app Setup"
+	screenTitle: "Controller for Onkyo & Pioneer Setup"
 
 
 	function saveespURL(text) {
@@ -210,7 +210,7 @@ Screen {
 
 	Text {
 		id: myLabel66
-		text: "URL of Onkyo Receiver (example: http://192.168.10.241)"
+		text: "URL of Onkyo/Pioneer Receiver (example: http://192.168.10.241)"
 		font.pixelSize:  isNxt ? 20 : 16
 		font.family: qfont.regular.name
 
@@ -228,7 +228,7 @@ Screen {
 		width: parent.width - 40
 		height: 35
 		leftTextAvailableWidth: 300
-		leftText: "Onkyo URL"
+		leftText: "Onkyo/Pioneer URL"
 
 		anchors {
 			left: myLabel.left
@@ -352,7 +352,7 @@ Screen {
 		width: (parent.width*0.4) - 40		
 		height: 35		
 		leftTextAvailableWidth: 200
-		leftText: "Onkyo Title Name"
+		leftText: "Title Name"
 
 		anchors {
 			left: myLabel2.left
@@ -361,7 +361,7 @@ Screen {
 		}
 
 		onClicked: {
-			qkeyboard.open("Onkyo Title Name", idxTitle.inputText, saveidxTitle)
+			qkeyboard.open("Title Name", idxTitle.inputText, saveidxTitle)
 		}
 		visible: app.domMode
 	}
@@ -391,7 +391,7 @@ Screen {
 		width: (parent.width*0.4) - 40		
 		height: 35		
 		leftTextAvailableWidth: 200
-		leftText: "Onkyo Artist"
+		leftText: "Artist"
 
 		anchors {
 			left: idxPT.left
@@ -400,7 +400,7 @@ Screen {
 		}
 
 		onClicked: {
-			qkeyboard.open("Onkyo Artist", idxArtist.inputText, saveidxArtist)
+			qkeyboard.open("Artist", idxArtist.inputText, saveidxArtist)
 		}
 		visible: app.domMode
 	}
@@ -410,7 +410,7 @@ Screen {
 		width: (parent.width*0.4) - 40		
 		height: 35		
 		leftTextAvailableWidth: 200
-		leftText: "Onkyo Album"
+		leftText: "Album"
 
 		anchors {
 			left: idxPT.left
@@ -419,7 +419,7 @@ Screen {
 		}
 
 		onClicked: {
-			qkeyboard.open("Onkyo Album", idxAlbum.inputText, saveidxAlbum)
+			qkeyboard.open("Album", idxAlbum.inputText, saveidxAlbum)
 		}
 		visible: app.domMode
 	}

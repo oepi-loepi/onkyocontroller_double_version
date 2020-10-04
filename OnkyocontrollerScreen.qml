@@ -4,7 +4,7 @@ import BasicUIControls 1.0;
 
 Screen {
 	id: onkyocontrollerScreen
-	screenTitle: "Onkyo Controller"
+	screenTitle: "Controller for Onkyo & Pioneer"
 	property int butHeight : isNxt ? 50: 40
 
 		onShown: {
@@ -324,6 +324,39 @@ Screen {
 				left: itemText.left
 				top: titleText.bottom
 				topMargin: isNxt? 30:24
+			}
+			visible: app.actPower && (app.actBT || app.actAirplay || app.actNET)
+		}
+
+		Text {
+			id:socketERRMessage
+			width: parent.width
+			text: app.socketERRMessage
+			font.pixelSize:  isNxt? 12:10
+			font.family: qfont.regular.name
+			font.bold: false
+			color: colors.clockTileColor
+			wrapMode: Text.WordWrap
+			anchors {
+				left: albumArt.left
+				top: timeText.top
+			}
+			visible: app.actPower && (app.actBT || app.actAirplay || app.actNET)
+		}
+
+		Text {
+			id:onkyoERRMessage
+			width: parent.width
+			text: app.onkyoERRMessage
+			font.pixelSize:  isNxt? 12:10
+			font.family: qfont.regular.name
+			font.bold: false
+			color: colors.clockTileColor
+			wrapMode: Text.WordWrap
+			anchors {
+				left: albumArt.left
+				top: socketERRMessage.bottom
+				topMargin: isNxt? 5:4
 			}
 			visible: app.actPower && (app.actBT || app.actAirplay || app.actNET)
 		}
