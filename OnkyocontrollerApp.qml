@@ -20,7 +20,6 @@ App {
 	property url onkyocontrollerScreenUrl : "OnkyocontrollerScreen.qml"
 	property OnkyocontrollerScreen onkyocontrollerScreen
 
-
 	property string	statnrHEX
 	property string actualArtist
 	property string actualTitle
@@ -71,14 +70,13 @@ App {
 	property string idxTitle : "101"
 	property string idxPT : "102"
 	property string idxArtist : "104"
+	property string idxAlbum : "103"
+
 	property string imageURL : onkyoURL + "/album_art.cgi"
 
 	property string tmpSleep : "No"
 	property string tmpDOM : "No"
 
-
-
-	// user settings from config file
 	property variant onkyocontrollerSettingsJson : {
 		'socketURL': "",
 		'espIP': "",
@@ -90,41 +88,14 @@ App {
 		'iidxTitle': "",
 		'idxPT': "",
 		'idxArtist': "",
+		'idxAlbum': "",
 		'tmpDOM': "",
 		'tmpSleep': ""
 	}
 
 
-
-	FileIO {
-		id: onkyocontrollerSettingsFile
-		source: "file:///mnt/data/tsc/onkyocontroller_userSettings.json"
- 	}
-
-
-	function init() {
-		registry.registerWidget("tile", tileUrl, this, null, {thumbLabel: qsTr("Onkyo"), thumbIcon: thumbnailIcon, thumbCategory: "general", thumbWeight: 30, baseTileWeight: 10, thumbIconVAlignment: "center"});
-		registry.registerWidget("screen", onkyocontrollerConfigScreenUrl, this, "onkyocontrollerConfigScreen");
-		registry.registerWidget("screen", onkyocontrollerScreenUrl, this, "onkyocontrollerScreen");
-	}
-	
-	Connections {
-		target: screenStateController
-		onScreenStateChanged: {
-			if (screenStateController.screenState == ScreenStateController.ScreenColorDimmed || screenStateController.screenState == ScreenStateController.ScreenOff) {
-				onkyoPlayInfoTimer.stop();
-				onkyoPlayInfoTimer.interval = 10000;
-				onkyoPlayInfoTimer.start();
-			} else {
-				onkyoPlayInfoTimer.stop();
-				onkyoPlayInfoTimer.interval = 5000;
-				onkyoPlayInfoTimer.start();
-			}
-		}
-	}
-
-/////////////////////////////////ESP SOCKET VERSION///////////////////////////////////////////
-
+/////////////////////////////////ESP SOCKET OPTION///////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
    	WebSocket {
         	id: socket
         	url: socketURL 
@@ -139,12 +110,12 @@ App {
                      socketerror = true
 		     socketERRMessage = "ESP<->Toon error"
                 } else if (socket.status == WebSocket.Open) {
-                     socket.sendTextMessage("This is Toon for ESP")
+                     socket.sendTextMessage("This is Toon for ESP controller")
 		     socketERRMessage = "ESP<->Toon connected"
                 } else if (socket.status == WebSocket.Closed) {
 		     socketERRMessage = "ESP<->Toon closed"
                 }
-        	active:webSocketactive
+        	active:!domMode & webSocketactive
     	}
 
 	function sendwebsock(socketmessage) {
@@ -249,7 +220,8 @@ App {
 
 	}
 
-/////////////////////////////////DOMOTICZ VERSION///////////////////////////////////////////
+/////////////////////////////////DOMOTICZ OPTION///////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 	function readOnkyoState() {
 
@@ -400,6 +372,22 @@ App {
 				xmlhttp4.open("GET", domoticzURL1 + "/json.htm?type=devices&rid=" + idxCOM);
 				xmlhttp4.send();
 
+				
+				//in BT mode the title is in the album and the title is the source.
+				if (actBT){
+					var xmlhttp5 = new XMLHttpRequest();
+					xmlhttp5.onreadystatechange=function() {
+						if (xmlhttp5.readyState == XMLHttpRequest.DONE) {
+							if (xmlhttp5.status == 200) {
+									var JsonString5 = xmlhttp5.responseText;
+        								var JsonObject5= JSON.parse(JsonString5);
+        								actualTitle = JsonObject5.result[0].Data;
+							}
+						}
+					}
+					xmlhttp5.open("GET", domoticzURL1 + "/json.htm?type=devices&rid=" + idxAlbum);
+					xmlhttp5.send();
+				}
 		}
 	}
 
@@ -421,6 +409,35 @@ App {
 	
 
 ////////////////////////////////////////GENERAL////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	FileIO {
+		id: onkyocontrollerSettingsFile
+		source: "file:///mnt/data/tsc/onkyocontroller_userSettings.json"
+ 	}
+
+
+	function init() {
+		registry.registerWidget("tile", tileUrl, this, null, {thumbLabel: qsTr("Onkyo"), thumbIcon: thumbnailIcon, thumbCategory: "general", thumbWeight: 30, baseTileWeight: 10, thumbIconVAlignment: "center"});
+		registry.registerWidget("screen", onkyocontrollerConfigScreenUrl, this, "onkyocontrollerConfigScreen");
+		registry.registerWidget("screen", onkyocontrollerScreenUrl, this, "onkyocontrollerScreen");
+	}
+	
+	Connections {
+		target: screenStateController
+		onScreenStateChanged: {
+			if (screenStateController.screenState == ScreenStateController.ScreenColorDimmed || screenStateController.screenState == ScreenStateController.ScreenOff) {
+				onkyoPlayInfoTimer.stop();
+				onkyoPlayInfoTimer.interval = 10000;
+				onkyoPlayInfoTimer.start();
+			} else {
+				onkyoPlayInfoTimer.stop();
+				onkyoPlayInfoTimer.interval = 5000;
+				onkyoPlayInfoTimer.start();
+			}
+		}
+	}
+
 
 	Timer {
 		id:socketreconnectTimer
@@ -475,6 +492,7 @@ App {
 			idxTitle = onkyocontrollerSettingsJson['idxTitle'];
 			idxPT = onkyocontrollerSettingsJson['idxPT'];
 			idxArtist = onkyocontrollerSettingsJson['idxArtist'];
+			idxAlbum = onkyocontrollerSettingsJson['idxAlbum'];
 
 		} catch(e) {
 		}
@@ -509,6 +527,7 @@ App {
 			"idxTitle" : idxTitle,
 			"idxPT" : idxPT,
 			"idxArtist" : idxArtist,
+			"idxAlbum" : idxAlbum,
 
 			"tmpDOM" : tmpDOM,
 			"tmpSleep" : tmpSleep

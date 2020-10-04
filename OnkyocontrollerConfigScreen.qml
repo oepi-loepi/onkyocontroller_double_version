@@ -64,6 +64,11 @@ Screen {
 		}
 	}
 
+	function saveidxAlbum(text) {
+		if (text) {
+			app.idxAlbum = text;
+		}
+	}
 
 	onShown: {
 		enableDomMode.isSwitchedOn = app.domMode;
@@ -76,7 +81,7 @@ Screen {
 		idxTitle.inputText = app.idxTitle;
 		idxPT.inputText = app.idxPT;
 		idxArtist.inputText = app.idxArtist;
-
+		idxAlbum.inputText = app.idxAlbum;
 		enableSleepToggle.isSwitchedOn = app.enableSleep;
 
 		addCustomTopRightButton("Save");
@@ -236,6 +241,37 @@ Screen {
 		}
 		visible: app.domMode
 	}
+////////////////////////////////////////////////////////////////////////
+
+	Text {
+		id: showInSleep
+		width:  160
+		text: "Show in Sleepmode"
+		font.pixelSize:  isNxt ? 20 : 16
+		font.family: qfont.regular.name
+
+		anchors {
+			left: myLabel.left
+			top: onkyoURL.bottom
+			topMargin: 20
+		}
+	}
+
+	OnOffToggle {
+		id: enableSleepToggle
+		height:  30
+		anchors.left: showInSleep.right
+		anchors.leftMargin: isNxt ? 65 : 30
+		anchors.top: showInSleep.top
+		leftIsSwitchedOn: false
+		onSelectedChangedByUser: {
+			if (isSwitchedOn) {
+				app.enableSleep = true;
+			} else {
+				app.enableSleep = false;
+			}
+		}
+	}
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -247,7 +283,7 @@ Screen {
 
 		anchors {
 			left: myLabel.left
-			top: onkyoURL.bottom
+			top: enableSleepToggle.bottom
 			topMargin: 20
 		}
 		visible: app.domMode
@@ -330,6 +366,7 @@ Screen {
 		visible: app.domMode
 	}
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	EditTextLabel4421 {
 		id: idxPT
 		width: (parent.width*0.4) - 40		
@@ -338,9 +375,9 @@ Screen {
 		leftText: "Playback time"
 
 		anchors {
-			left: myLabel2.left
-			top: idxTitle.bottom
-			topMargin: 6
+			left: idxOnOff.right
+			top: idxOnOff.top
+			leftMargin: 60
 		}
 
 		onClicked: {
@@ -357,7 +394,7 @@ Screen {
 		leftText: "Onkyo Artist"
 
 		anchors {
-			left: myLabel2.left
+			left: idxPT.left
 			top: idxPT.bottom
 			topMargin: 6
 		}
@@ -368,37 +405,24 @@ Screen {
 		visible: app.domMode
 	}
 
-	Text {
-		id: showInSleep
-		width:  160
-		text: "Show in Sleepmode"
-		font.pixelSize:  isNxt ? 20 : 16
-		font.family: qfont.regular.name
+	EditTextLabel4421 {
+		id: idxAlbum
+		width: (parent.width*0.4) - 40		
+		height: 35		
+		leftTextAvailableWidth: 200
+		leftText: "Onkyo Album"
 
 		anchors {
-			left: myLabel.right
-			top: onkyoURL.bottom
-			leftMargin: isNxt ? 65 : 30
-			topMargin: 20
+			left: idxPT.left
+			top: idxArtist.bottom
+			topMargin: 6
 		}
-	}
 
-	OnOffToggle {
-		id: enableSleepToggle
-		height:  30
-		anchors.left: showInSleep.right
-		anchors.leftMargin: isNxt ? 65 : 30
-		anchors.top: showInSleep.top
-		leftIsSwitchedOn: false
-		onSelectedChangedByUser: {
-			if (isSwitchedOn) {
-				app.enableSleep = true;
-			} else {
-				app.enableSleep = false;
-			}
+		onClicked: {
+			qkeyboard.open("Onkyo Album", idxAlbum.inputText, saveidxAlbum)
 		}
+		visible: app.domMode
 	}
-
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
